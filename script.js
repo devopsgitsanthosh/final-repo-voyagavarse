@@ -50,35 +50,38 @@ menuBtn?.addEventListener("click", () => {
 });
 
 
-// 🔐 Firebase auth state (FIRST)
+// // 🔐 Firebase auth state
 onAuthStateChanged(auth, (user) => {
   if (user) {
-    // User logged in → replace navbar
     nav.innerHTML = `
       <span>Welcome 👋</span>
       <button class="btn" id="logoutBtn">Logout</button>
     `;
-
-    document.getElementById("logoutBtn").addEventListener("click", () => {
-      signOut(auth);
-    });
-
   } else {
-    // User NOT logged in → keep buttons & attach clicks
-    const loginBtn = document.getElementById("loginBtn");
-    const registerBtn = document.getElementById("registerBtn");
-
-    if (loginBtn) {
-      loginBtn.addEventListener("click", () => {
-        window.location.href = "signin.html";
-      });
-    }
-
-    if (registerBtn) {
-      registerBtn.addEventListener("click", () => {
-        window.location.href = "register.html";
-      });
-    }
+    nav.innerHTML = `
+      <button class="btn white-btn" id="loginBtn">Sign In</button>
+      <button class="btn" id="registerBtn">Sign Up</button>
+    `;
   }
 });
+
+// ✅ ONE click handler for ALL navbar actions
+nav.addEventListener("click", (e) => {
+  if (e.target.id === "logoutBtn") {
+    signOut(auth)
+      .then(() => {
+        window.location.reload();
+      })
+      .catch((err) => console.error(err));
+  }
+
+  if (e.target.id === "loginBtn") {
+    window.location.href = "signin.html";
+  }
+
+  if (e.target.id === "registerBtn") {
+    window.location.href = "register.html";
+  }
+});
+
 });

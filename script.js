@@ -42,6 +42,14 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   const nav = document.querySelector(".nav-button");
 
+const menuBtn = document.getElementById("menu-btn");
+const navLinks = document.getElementById("nav-links");
+
+menuBtn?.addEventListener("click", () => {
+  navLinks.classList.toggle("show");
+});
+
+
 // 🔐 Firebase auth state (FIRST)
 onAuthStateChanged(auth, (user) => {
   if (user) {

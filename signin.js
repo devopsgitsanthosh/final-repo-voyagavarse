@@ -1,18 +1,20 @@
-const loginForm = document.getElementById("loginForm");
+import { auth } from "./firebase.js";
+import { signInWithEmailAndPassword } 
+from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+const form = document.getElementById("loginForm");
 const errorText = document.getElementById("loginError");
 
-loginForm.addEventListener("submit", (e) => {
+form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const user = JSON.parse(localStorage.getItem("voyageverseUser"));
   const email = loginEmail.value;
   const password = loginPassword.value;
 
-  if (!user || email !== user.email || password !== user.password) {
-    errorText.textContent = "Invalid email or password";
-    return;
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+    window.location.href = "index.html";
+  } catch (error) {
+    errorText.textContent = error.message;
   }
-
-  localStorage.setItem("isLoggedIn", "true");
-  window.location.href = "index.html";
 });
